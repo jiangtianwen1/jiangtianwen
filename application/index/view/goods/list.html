@@ -1,0 +1,43 @@
+<div style="padding-top: 50px">
+ 
+<table class="layui-table">
+  <colgroup>
+    <col width="150">
+    <col width="200">
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th>编号</th>
+      <th>商品名</th>
+      <th>图片</th>
+      <th>栏目</th>
+      <th>介绍</th>
+      <th></th>
+    </tr> 
+  </thead>
+   {foreach $data as $v} 
+  <tbody>    
+    <tr>
+
+      <td>{$v.id}</td>
+
+      <td>
+        {$v.goods_name}
+    </td>
+      <td><img src="/uploads/{$v.goods_picture}"></td>
+
+      <td>{$v.category_id}</td>
+      <td>{$v.goods_desc}</td>
+      <td>
+        <button class="layui-btn"><a href="{:url('index/goods/edit',['id'=>$v.id])}">编辑</a></button>
+       <button class="layui-btn"><a href="{:url('index/index/delete',['id'=>$v.id])}">删除</a></button>
+     </td>
+    </tr>
+   
+  </tbody>
+  {/foreach}
+</table>
+{$data->render()}
+  <div id="test1" class="layui-col-md4 layui-col-md-offset5"></div>
+</div>

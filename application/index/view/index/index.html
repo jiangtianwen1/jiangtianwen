@@ -1,0 +1,44 @@
+<div style="padding: 20px"x>
+<form class="layui-form" action="{:url('index/index/insert')}" method="POST" enctype="multipart/form-data">
+  <div class="layui-form-item " >
+    <label class="layui-form-label">商品名</label>
+    <div class="layui-input-inline " >
+      <input type="text" name="goods_name" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item ">
+    <label class="layui-form-label">分类id</label>
+    <div class="layui-input-inline">
+      <input type="text" name="category_id" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux">辅助文字</div>
+    <input type="file" name="goods_picture">
+  </div>
+ 
+   <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label ">简介</label>
+    <div class=" layui-col-md5">
+      <textarea name="goods_desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" type="submit" lay-submit lay-filter="formDemo">提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+</div>
+<script>
+//Demo
+/*layui.use('form', function(){
+  var form = layui.form;
+  
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+    layer.msg(JSON.stringify(data.field));
+    return false;
+  });
+});*/
+</script>

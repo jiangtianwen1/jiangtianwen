@@ -1,0 +1,80 @@
+<div style="padding-top: 50px">
+ <form class="layui-form" action="{:url('index/select')}" method="post" enctype="multipart/form-data"> 
+ <div class="layui-form-item">
+
+ <div class="layui-inline">
+    <label class="layui-form-label">昵称</label>
+    <div class="layui-input-inline" style="width: 100px;">
+      <input type="text" name="name" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-inline">
+    <label class="layui-form-label">范围</label>
+    <div class="layui-input-inline" style="width: 100px;">
+      <input type="text" name="price_min" placeholder="￥" autocomplete="off" class="layui-input">
+    </div>
+    <div class="layui-form-mid">-</div>
+    <div class="layui-input-inline" style="width: 100px;">
+      <input type="text" name="price_max" placeholder="￥" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  
+  <div class="layui-inline">
+    <label class="layui-form-label">密码</label>
+    <div class="layui-input-inline" style="width: 100px;">
+      <input type="password" name="password" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+    <button class="layui-btn" style="submit">搜索</button> 
+
+</div>   
+
+  <div class="layui-col-md3 layui-col-md-offset9">   
+     
+    <a href="{:url('index/excel/excellist')}" class="layui-btn">导出</a>
+     <a href="{:url('index/index/add')}" class="layui-btn">添加</a> 
+  </div>
+  
+</form>
+ </div>
+<div style="padding-top: 50px">
+ 
+<table class="layui-table">
+  <colgroup>
+    <col width="150">
+    <col width="200">
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th>编号</th>
+      <th>昵称</th>
+      <th>密码</th>
+      <th>角色</th>
+      <th>添加时间</th>
+      <th></th>
+    </tr> 
+  </thead>
+   {foreach $d as $v} 
+  <tbody>    
+    <tr>
+
+      <td>{$v.id}</td>
+      <td>{$v.name}</td>
+      <td>{$v.password}</td>
+      <td>{$v.role_id}</td>
+      <td>{$v.create_time}</td>
+      <td>
+        <button class="layui-btn"><a href="{:url('index/index/edit',['id'=>$v.id])}">编辑</a></button>
+       <button class="layui-btn"><a href="{:url('index/index/delete',['id'=>$v.id])}">删除</a></button>
+     </td>
+    </tr>
+   
+  </tbody>
+  {/foreach}
+</table>
+{$d->render()}
+  <div id="test1" class="layui-col-md4 layui-col-md-offset5"></div>
+</div>
+
+

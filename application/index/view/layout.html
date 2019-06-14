@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>layout 后台大布局 - Layui</title>
+  <link rel="stylesheet" href="/static/admin/layui/css/layui.css">
+<style type="text/css">
+  .layui-upload-img {
+ width: 92px;
+ height: 92px;
+ margin: 0 10px 10px 0;
+}
+</style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header">
+    <div class="layui-logo"><i class="layui-icon layui-icon-face-surprised" style="font-size: 30px; color: #1E9FFF;"></i>吊炸天 </div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <ul class="layui-nav layui-layout-left">
+      <li class="layui-nav-item"><a href="">控制台</a></li>
+      <li class="layui-nav-item"><a href="">商品管理</a></li>
+      <li class="layui-nav-item"><a href="">用户</a></li>
+      <li class="layui-nav-item">
+        <a href="javascript:;">其它系统</a>
+        <dl class="layui-nav-child">
+          <dd><a href="">邮件管理</a></dd>
+          <dd><a href="">消息管理</a></dd>
+          <dd><a href="">授权管理</a></dd>
+        </dl>
+      </li>
+    </ul>
+    <ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+          {$Think.session.admin_info.name}
+        </a>
+        <dl class="layui-nav-child">
+          <dd><a href="">基本资料</a></dd>
+          <dd><a href="">安全设置</a></dd>
+        </dl>
+      </li>
+      <li class="layui-nav-item"><a href="{:url('index/login/tuichu')}">退了</a></li>
+    </ul>
+  </div>
+  
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+        <li class="layui-nav-item layui-nav-itemed">
+          <a class="" href="{:url('index/index/index')}">所有商品</a>
+          <dl class="layui-nav-child">
+            <dd><a href="{:url('index/index/select')}">管理员</a></dd>
+            <dd><a href="{:url('index/goods/index')}">添加商品</a></dd>
+            <dd><a href="{:url('index/goods/lis')}">商品列表</a></dd>
+            <dd><a href="">超链接</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">解决方案</a>
+          <dl class="layui-nav-child">
+            <dd><a href="{:url('index/excel/add')}">列表一</a></dd>
+            <dd><a href="javascript:;">列表二</a></dd>
+            <dd><a href="">超链接</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item"><a href="">云市场</a></li>
+        <li class="layui-nav-item"><a href="">发布商品</a></li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="layui-body">
+  {__CONTENT__}
+  </div>
+  
+  <div class="layui-footer">
+    <!-- 底部固定区域 -->
+    © layui.com - 底部固定区域
+  </div>
+</div>
+
+<script src="/static/admin/layui/layui.js"></script>
+<script>
+//JavaScript代码区域
+layui.use('element', function(){
+  var element = layui.element;
+  
+});
+layui.use('form', function(){
+  var form = layui.form;});
+</script>
+<script>
+layui.use('laypage', function(){
+  var laypage = layui.laypage;
+  //执行一个laypage实例
+  laypage.render({
+    elem: 'id' //注意，这里的 test1 是 ID，不用加 # 号
+    ,count: 50 //数据总数，从服务端得到
+  });
+
+  
+});
+</script>
+
+<script>
+layui.use('upload', function(){
+  var $ = layui.jquery
+  ,upload = layui.upload;
+  //多图片上传
+  upload.render({
+    elem: '#test2'
+    ,url: '/upload/'
+    ,multiple: true
+    ,before: function(obj){
+      //预读本地文件示例，不支持ie8
+      obj.preview(function(index, file, result){
+        $('#demo2').append('<img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img" >')
+      });
+    }
+    ,done: function(res){
+      //上传完毕
+    }
+  });
+  
+});
+</script>
+<script>
+layui.use(['tree', 'util'], function(){
+  var tree = layui.tree
+  ,layer = layui.layer
+  ,util = layui.util
+  
+  //模拟数据
+  ,data = [{
+    title: '一级1'
+    ,id: 1
+    ,checked: true
+    ,spread: true
+    ,children: [{
+      title: '二级1-1 可允许跳转'
+      ,id: 3
+      ,href: 'https://www.layui.com/'
+      ,children: [{
+        title: '三级1-1-3'
+        ,id: 23
+        ,children: [{
+          title: '四级1-1-3-1'
+          ,id: 24
+          ,children: [{
+            title: '五级1-1-3-1-1'
+            ,id: 30
+          },{
+            title: '五级1-1-3-1-2'
+            ,id: 31
+          }]
+        }]
+      },{
+        title: '三级1-1-1'
+        ,id: 7
+        ,children: [{
+          title: '四级1-1-1-1 可允许跳转'
+          ,id: 15
+          ,href: 'https://www.layui.com/doc/'
+        }]
+      },{
+        title: '三级1-1-2'
+        ,id: 8
+        ,children: [{
+          title: '四级1-1-2-1'
+          ,id: 32
+        }]
+      }]
+    },{
+      title: '二级1-2'
+      ,id: 4
+      ,spread: true
+      ,children: [{
+        title: '三级1-2-1'
+        ,id: 9
+        ,disabled: true
+      },{
+        title: '三级1-2-2'
+        ,id: 10
+      }]
+    },{
+      title: '二级1-3'
+      ,id: 20
+      ,children: [{
+        title: '三级1-3-1'
+        ,id: 21
+      },{
+        title: '三级1-3-2'
+        ,id: 22
+      }]
+    }]
+  },{
+    title: '一级2'
+    ,id: 2
+    ,spread: true
+    ,children: [{
+      title: '二级2-1'
+      ,id: 5
+      ,spread: true
+      ,children: [{
+        title: '三级2-1-1'
+        ,id: 11
+      },{
+        title: '三级2-1-2'
+        ,id: 12
+      }]
+    },{
+      title: '二级2-2'
+      ,id: 6
+      ,children: [{
+        title: '三级2-2-1'
+        ,id: 13
+      },{
+        title: '三级2-2-2'
+        ,id: 14
+        ,disabled: true
+      }]
+    }]
+  },{
+    title: '一级3'
+    ,id: 16
+    ,children: [{
+      title: '二级3-1'
+      ,id: 17
+      ,fixed: true
+      ,children: [{
+        title: '三级3-1-1'
+        ,id: 18
+      },{
+        title: '三级3-1-2'
+        ,id: 19
+      }]
+    },{
+      title: '二级3-2'
+      ,id: 27
+      ,children: [{
+        title: '三级3-2-1'
+        ,id: 28
+      },{
+        title: '三级3-2-2'
+        ,id: 29
+      }]
+    }]
+  }]
+  
+  //模拟数据1
+  ,data1 = [{
+    title: '江西'
+    ,id: 1
+    ,children: [{
+      title: '南昌'
+      ,id: 1000
+      ,children: [{
+        title: '青山湖区'
+        ,id: 10001
+      },{
+        title: '高新区'
+        ,id: 10002
+      }]
+    },{
+      title: '九江'
+      ,id: 1001
+    },{
+      title: '赣州'
+      ,id: 1002
+    }]
+  },{
+    title: '广西'
+    ,id: 2
+    ,children: [{
+      title: '南宁'
+      ,id: 2000
+    },{
+      title: '桂林'
+      ,id: 2001
+    }]
+  },{
+    title: '陕西'
+    ,id: 3
+    ,children: [{
+      title: '西安'
+      ,id: 3000
+    },{
+      title: '延安'
+      ,id: 3001
+    }]
+  }]
+  
+  //模拟数据2
+  ,data2 = [{
+    title: '早餐'
+    ,id: 1
+    ,children: [{
+      title: '油条'
+      ,id: 5
+    },{
+      title: '包子'
+      ,id: 6
+    },{
+      title: '豆浆'
+      ,id: 7
+    }]
+  },{
+    title: '午餐'
+    ,id: 2
+    ,checked: true
+    ,children: [{
+      title: '藜蒿炒腊肉'
+      ,id: 8
+    },{
+      title: '西湖醋鱼'
+      ,id: 9
+    },{
+      title: '小白菜'
+      ,id: 10
+    },{
+      title: '海带排骨汤'
+      ,id: 11
+    }]
+  },{
+    title: '晚餐'
+    ,id: 3
+    ,children: [{
+      title: '红烧肉'
+      ,id: 12
+      ,fixed: true
+    },{
+      title: '番茄炒蛋'
+      ,id: 13
+    }]
+  },{
+    title: '夜宵'
+    ,id: 4
+    ,children: [{
+      title: '小龙虾'
+      ,id: 14
+      ,checked: true
+    },{
+      title: '香辣蟹'
+      ,id: 15
+      ,disabled: true
+    },{
+      title: '烤鱿鱼'
+      ,id: 16
+    }]
+  }];
+ 
+  //基本演示
+  tree.render({
+    elem: '#test12'
+    ,data: data
+    ,showCheckbox: true  //是否显示复选框
+    ,id: 'demoId1'
+    ,isJump: true //是否允许点击节点时弹出新窗口跳转
+    ,click: function(obj){
+      var data = obj.data;  //获取当前点击的节点数据
+      layer.msg('状态：'+ obj.state + '<br>节点数据：' + JSON.stringify(data));
+    }
+  });
+  
+  //按钮事件
+  util.event('lay-demo', {
+    getChecked: function(othis){
+      var checkedData = tree.getChecked('demoId1'); //获取选中节点的数据
+      
+      layer.alert(JSON.stringify(checkedData), {shade:0});
+      console.log(checkedData);
+    }
+    ,setChecked: function(){
+      tree.setChecked('demoId1', [12, 16]); //勾选指定节点
+    }
+    ,reload: function(){
+      //重载实例
+      tree.reload('demoId1', {
+        
+      });
+      
+    }
+  });
+ 
+  //常规用法
+  tree.render({
+    elem: '#test1' //默认是点击节点可进行收缩
+    ,data: data1
+  });
+  
+  //无连接线风格
+  tree.render({
+    elem: '#test13'
+    ,data: data1
+    ,showLine: false  //是否开启连接线
+  });
+ 
+  //仅节点左侧图标控制收缩
+  tree.render({
+    elem: '#test2'
+    ,data: data1
+    ,onlyIconControl: true  //是否仅允许节点左侧图标控制展开收缩
+    ,click: function(obj){
+      layer.msg(JSON.stringify(obj.data));
+    }
+  });
+  //手风琴模式
+  tree.render({
+    elem: '#test4'
+    ,data: [{
+      title: '优秀'
+      ,children: [{
+        title: '80 ~ 90'
+      },{
+        title: '90 ~ 100'
+      }]
+    },{
+      title: '良好'
+      ,children: [{
+        title: '70 ~ 80'
+      },{
+        title: '60 ~ 70'
+      }]
+    },{
+      title: '要努力奥'
+      ,children: [{
+        title: '0 ~ 60'
+      }]
+    }]
+    ,accordion: true 
+  });
+ 
+  //点击节点新窗口跳转
+  tree.render({
+    elem: '#test5'
+    ,data: data
+    ,isJump: true  //link 为参数匹配
+  });
+ 
+  //开启复选框
+  tree.render({
+    elem: '#test7'
+    ,data: data2
+    ,showCheckbox: true
+  });
+ 
+  //开启节点操作图标
+  tree.render({
+    elem: '#test9'
+    ,data: data1
+    ,edit: ['add', 'update', 'del'] //操作节点的图标
+    ,click: function(obj){
+      layer.msg(JSON.stringify(obj.data));
+    }
+  });
+});
+</script>
+
+</body>
+</html>

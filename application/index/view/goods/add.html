@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    html,
+    body,
+    .upload-wapper {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+    }
+    .img-list {
+        padding: 10px;
+        float: left;
+        margin: 0;
+        overflow: hidden;
+    }
+    .img-list li {
+        float: left;
+        width: 300px;
+        height: 150px;
+        overflow: hidden;
+        list-style: none;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        position: relative;
+    }
+
+    .img-list li img {
+        width: 100%;
+        height: 100%;
+    }
+    .upload-btn {
+        width: 300px;
+        height: 150px;
+        margin: 10px 10px 10px 0;
+        line-height: 150px;
+        background: rgba(0, 0, 0, .4);
+        color: white;
+        text-align: center;
+        float: left;
+        position: relative;
+    }
+    .delete-btn {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        background: rgba(0, 0, 0, .4);
+        color: white;
+        text-align: center;
+        cursor: pointer;
+        z-index: 1;
+        display: none;
+    }
+    .upload-btn input {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        border: 0;
+        outline: none;
+        opacity: 0;
+        cursor: pointer
+    }
+    </style>
+</head>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<body>
+  
+
+  <form action="{:url('index/goods/upload')}" enctype="multipart/form-data" method="post">
+    <div class="upload-wapper">
+        <ul class="img-list">
+        </ul>
+        <div class="upload-btn">
+            <span>+ 请选择图片</span>
+            <input type="file" name="file[]" accept="image/*" id="upload" multiple />
+        </div>
+    </div>
+       <input type="submit" name="tijiao">
+     </form>
+</body>
+<script>
+var imgSrc = []
+$('#upload').on("change", function() {
+    var files = this.files
+    $.each(files, function(index, item) {
+        var src = getImgUrl(item)
+        imgSrc.push(src)
+    })
+    createImgList($(".img-list"))
+})
+$('.img-list').on('mouseover', 'li', function() {
+    $(this).children('a').show()
+})
+$('.img-list').on('mouseleave', 'li', function() {
+    $(this).children('a').hide()
+
+})
+$('.img-list').on('click', '.delete-btn', function() {
+  var index  = $(this).attr("index")
+  imgSrc.splice(index, 1)
+   createImgList($(".img-list"))
+})
+function getImgUrl(file) {
+    var url = null
+    if (window.createObjectURL != undefined) {
+        url = window.createObjectURL(file);
+    } else if (window.URL != undefined) {
+        url = window.URL.createObjectURL(file);
+    } else if (window.webkitURL != undefined) {
+        url = window.webkitURL.createObjectURL(file);
+    }
+    return url
+}
+function createImgList(dom) {
+    $(dom).html("")
+    $.each(imgSrc, function(index, item) {
+        var oldhtml = $(dom).html()
+        $(dom).html(oldhtml + "<li><image src=" + item + " ><a class='hide delete-btn'  index=" + index + ">X</a></li>")
+    })
+}
+</script>
+
+</html>
