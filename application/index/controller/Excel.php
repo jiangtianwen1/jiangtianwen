@@ -2,6 +2,7 @@
 namespace app\index\Controller;
 use think\Controller;
 use think\Db;
+use think\Model;
 class Excel extends Controller {
  
 
@@ -153,9 +154,119 @@ class Excel extends Controller {
     public function add()
     {
 
-     $this->view->engine->layout(false); 
-        return view();
+   //  $this->view->engine->layout(false); 
+      $data =  \app\index\model\Category::where('id',1)->find();  
+
+        $sql =  \app\index\model\Goods::where('Category_id',1)->select(); // var_dump($sql);die;
+        return view('add',[
+      'data' =>$data,   
+     'sql' =>$sql
+        ]);
     }
 
+    public function ceshi()
+    {
+
+  //  $a= \app\index\model\Goods::all(['goods_name'=>'苹果','goods_name'=>'香蕉']);
+  //  $a= \app\index\model\Goods::all(['category_id'=>'1','category_id'=>'2']);
+  //  $a= collection($a->toArray());
+   // $a= Db::table('goods')->where('goods_name','苹果')->whereor('goods_name','香蕉')->select();
+
+       // var_dump($a);die;
+         
+       
+      return view(); 
+    }
+
+  public function cesi()
+  {
+ $a = \app\index\model\Admin::select();  // var_dump($a);die;
+
+ $res = [
+           'code' => 0,
+           'msg' => 'success',
+           'data' => $a
+       ];
+          return json($res);
+
+  }
+
+public function upload()
+{
+     /* $files = request()->param('file');//var_dump($files);die;
+    foreach($files as $file){
+        // 移动到框架应用根目录/public/uploads/ 目录下
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
+        if($info){
+          
+            // 输出 42a79759f284b767dfcb2a0197904287.jpg
+            $a =$info->getSaveName();
+              $res = [
+           'code' => 0,
+           'msg' => 'success',
+           'data' => $a
+       ];
+            return json($res);
+
+        }else{
+            // 上传失败获取错误信息
+            echo $file->getError();
+        }
+
+
+        $ret = array();  //返回的上传文件状态数组      
+          if ($_FILES["file"]["error"] > 0){ 
+        $ret["message"] =  $_FILES["file"]["error"] ;     
+        $ret["status"] = 0;          
+         $ret["src"] = "";            
+        return json($ret);         
+                     }else{               
+                     $pic =  $this->upload();               
+                     if($pic['info']== 1){ 
+                              $url = '/uploads/'.$pic['savename'];               
+                                     }  else {                   
+                                     $ret["message"] = $this->error($pic['err']);                                                        $ret["status"] = 0;                 
+                                   }                
+                                   $ret["message"]= "图片上传成功！";                
+                                   $ret["status"] = 1;                  
+                                   $ret["src"] = $url;               
+                                    return json($ret);       
+                                     }     }     
+                                     //图片上传代码     
+                                     private  function upload(){        
+                                     $file = request()->file('file');        
+                                     // 移动到框架应用根目录/public/uploads/ 目录下        
+                                     $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');        
+                                     $reubfo = array();  //定义一个返回的数组        
+                                     if($info){            
+                                     $reubfo['info']= 1;            
+                                     $reubfo['savename'] = $info->getSaveName();        
+                                   }else{           
+                                    // 上传失败获取错误信息            
+                                    $reubfo['info']= 0;            
+                                    $reubfo['err'] = $file->getError();;        
+                                  }        
+                                    return $reubfo; 
+
+*/
+ $files = request()->file('file'); // var_dump($files);die;
+    
+   
+ // 移动到框架应用根目录/public/uploads/ 目录下
+    if($files){
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
+        if($info){
+           
+           
+            // 输出 42a79759f284b767dfcb2a0197904287.jpg
+            echo $info->getFilename(); 
+        }else{
+            // 上传失败获取错误信息
+            echo $file->getError();
+        }
+ 
+    
+}
+}
 
 }

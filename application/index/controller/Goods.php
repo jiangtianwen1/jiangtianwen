@@ -12,7 +12,7 @@ class Goods extends Controller
     //	$this->view->engine->layout(false); 
 	return view('index');
 	}
-public function upload($img){
+public function upload(){
     // 获取表单上传文件
     $files = request()->file('file');//var_dump($files);die;
     foreach($files as $file){
@@ -74,5 +74,15 @@ public function lis()
   return view('index/edit',['d'=>$data]);
   }
 
+public function category_id(){
+
+  
+}
+ 
+ public function add()
+ {
+  return view();
+
+ }
 
 }

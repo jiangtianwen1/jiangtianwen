@@ -83,7 +83,7 @@
         </ul>
         <div class="upload-btn">
             <span>+ 请选择图片</span>
-            <input type="file" name="file[]" accept="image/*" id="upload" multiple />
+            <input type="file" name="file[]" accept="image/*" id="upload" multiple /> 
         </div>
     </div>
        <input type="submit" name="tijiao">
@@ -110,7 +110,9 @@ $('.img-list').on('click', '.delete-btn', function() {
   var index  = $(this).attr("index")
   imgSrc.splice(index, 1)
    createImgList($(".img-list"))
+ //$('span').append("<input type="file" name="file[]"  multiple /> ");
 })
+
 function getImgUrl(file) {
     var url = null
     if (window.createObjectURL != undefined) {
@@ -123,7 +125,7 @@ function getImgUrl(file) {
     return url
 }
 function createImgList(dom) {
-    $(dom).html("")
+   // $(dom).html("")
     $.each(imgSrc, function(index, item) {
         var oldhtml = $(dom).html()
         $(dom).html(oldhtml + "<li><image src=" + item + " ><a class='hide delete-btn'  index=" + index + ">X</a></li>")
