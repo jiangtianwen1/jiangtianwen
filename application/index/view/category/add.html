@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>菜鸟教程(runoob.com)</title>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+</script>
+<script>
+$(document).ready(function(){
+	$("button").click(function(){
+		$("#div1").load("category/add.html");
+	});
+});
+</script>
+</head>
+<body>
+
+<div style="padding-top: 50px">
+ 
+
+
+  <div id="test1" class="layui-col-md4 layui-col-md-offset5"></div>
+</div>
+ <select name="" class="input-xlarge" id="cate_one">
+                            <option value="">请选择一级分类</option>
+                              {foreach $cate as $cate_one}
+                            <option value="{$cate_one.id}">{$cate_one.cate_name}</option>
+                            {/foreach}
+                        </select>
+                        <select name="" class="input-xlarge" id="cate_two">
+                            <option value="">请选择二级分类</option>
+                        </select>
+                        <select name="cate_id" class="input-xlarge" id="cate_three">
+                            <option value="">请选择三级分类</option>
+                        </select>
+</body>
+<!--  public function getCateByPid($id)
+   {
+       //接收id参数
+       //$id = request()->param('id');
+       //检测id参数
+       if(!preg_match('/^\d+$/', $id)){
+           //id参数格式错误
+           $res = [
+               'code' => 10001,
+               'msg' => '参数错误'
+           ];
+           return json($res);
+       }
+       //根据分类id查询 其 子分类
+       $data = \app\admin\model\Category::where('pid', $id)->select();
+       //返回数据
+       $res = [
+           'code' => 10000,
+           'msg' => 'success',
+           'data' => $data
+       ];
+       return json($res);
+   }
+-->
+<script type="text/javascript">
+        $(function(){
+            //实例化富文本编辑器
+            UE.getEditor('editor');
+
+            $('.add').click(function(){
+                var add_div = '<div>[<a href="javascript:void(0);" class="sub">-</a>]商品图片：<input type="file" name="goods_pics[]" value="" class="input-xlarge"></div>';
+                $(this).parent().after(add_div);
+            });
+            //给未来元素绑定事件
+            // 根据jq的版本，1.8及以下版本中 使用live
+            // 1.9及以上版本 使用on
+            $('.sub').live('click',function(){
+                $(this).parent().remove();
+            });
+
+            //给一级分类下拉列表绑定change事件
+            $('#cate_one').change(function(){
+                //将二级分类和三级分类的下拉列表 还原
+                $('#cate_two').html('<option value="">请选择二级分类</option>');
+                $('#cate_three').html('<option value="">请选择三级分类</option>');
+                //发送ajax请求，以选中的分类id为参数
+                var cate_id = $(this).val();
+                if(cate_id == ''){
+                    return;
+                }
+                //组装请求参数
+                var data = {
+                    "id":cate_id
+                };
+                $.ajax({
+                    "url":"{:url('admin/category/getCateByPid')}",
+                    "type":"post",
+                    "data":data,
+                    "dataType":"json",
+                    "success":function(res){
+                        if(res.code != 10000){
+                            alert(res.msg);return;
+                        }
+                        //请求成功，需要将分类数据显示到页面
+                        //遍历 res.data 拼接option标签
+                        var str = '<option value="">请选择二级分类</option>';
+                        $.each(res.data, function(i, v){
+                            //v 就是一条数据，是json格式对象
+                            str += '<option value="' + v.id + '">' + v.cate_name + '</option>';
+                        });
+                        //将拼接好的html代码字符串，放到页面 二级分类下拉列表中
+                        $('#cate_two').html(str);
+                    }
+                });
+            });
+
+            //给二级分类下拉列表绑定change事件
+            $('#cate_two').change(function(){
+                //将三级分类下拉列表 还原
+                $('#cate_three').html('<option value="">请选择三级分类</option>');
+                //获取选中的分类id
+                var cate_id = $(this).val();
+                if(cate_id == ''){
+                    return;
+                }
+                //组装请求参数
+                var data = {
+                    'id':cate_id
+                };
+                //发送ajax请求
+                $.ajax({
+                   'url':"{:url('admin/category/getCateByPid')}",
+                    "type":"post",
+                    "data":data,
+                    "dataType":"json",
+                    "success":function(res){
+                        if(res.code != 10000){
+                            alert(res.msg);return;
+                        }
+                        //请求成功，将分类数据显示到页面 三级分类下拉列表中
+                        //遍历res.data 拼接option标签
+                        var str = '<option value="">请选择三级分类</option>';
+                        $.each(res.data, function(i, v){
+                            str += '<option value="' + v.id + '">' + v.cate_name + '</option>';
+                        });
+                        //将拼接的html代码字符串，放到页面中
+                        $('#cate_three').html(str);
+                    }
+                });
+            });
+
+            //给商品类型下拉列表绑定change事件
+            $('select[name=type_id]').change(function(){
+                //发送ajax请求，以选中的类型id为参数
+                var type_id = $(this).val();
+                //组装请求参数
+                var data = {'id':type_id};
+                //发送请求
+                $.ajax({
+                    "url":"{:url('admin/attribute/getattr')}",
+                    "type":"post",
+                    "data":data,
+                    "dataType":"json",
+                    "success":function(res){
+                        if(res.code != 10000){
+                            alert(res.msg);return;
+                        }
+                        //处理数据，遍历取到的属性信息数组
+                        //拼接html代码，展示属性名称信息
+                        //在属性名称后，加上对应的录入方式的标签
+                        var attrs = res.data;
+                        var str = '';
+                        $.each(attrs, function(i, v){
+                            //v 就是一条数据，是一个json对象
+                            //拼接展示属性名称的html
+                            str += '<label>' + v.attr_name + '：</label>';
+                            //判断，根据v.attr_input_type决定拼接什么样的标签
+                            if(v.attr_input_type == 0){
+                                //录入方式是输入框
+                                str += '<input type="text" name="attr_value['+ v.id +'][]" value="" class="input-xlarge">';
+                            }else if(v.attr_input_type == 1){
+                                //下拉列表
+                                str += '<select name="attr_value['+ v.id +'][]">';
+                                //遍历v.attr_values可选值
+                                $.each(v.attr_values, function(index, value){
+                                    //value 就是一个可选值
+                                    str += '<option value="' + value + '">' + value + '</option>';
+                                });
+                                str += '</select>';
+                            }else{
+                                //多选框
+                                //遍历v.attr_values可选值
+                                $.each(v.attr_values, function(index, value){
+                                    //value 就是一个可选值
+                                    str += '<input type="checkbox" name="attr_value['+ v.id +'][]" value="'+ value +'">' + value;
+                                });
+                            }
+                        });
+                        //将拼接好的html放到页面中展示
+                        $('#attrs').html(str);
+                    }
+                });
+            });
+        });
+    </script>
+</html>

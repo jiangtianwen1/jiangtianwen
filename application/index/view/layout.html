@@ -163,7 +163,7 @@ layui.use('upload', function(){
 //普通图片上传
   var uploadInst = upload.render({
     elem: '#upload_userimg'
-    ,url: 'upload'
+    ,url: '{:url('upload',["type"=>"upload"])}'
     ,accept: 'images' 
    ,exts:'jpg|png|jpeg'
    ,acceptMime:'image/*'

@@ -155,9 +155,12 @@ class Excel extends Controller {
     {
 
    //  $this->view->engine->layout(false); 
-      $data =  \app\index\model\Category::where('id',1)->find();  
+     // $data =  \app\index\model\Category::where('id',1)->find();  
 
-        $sql =  \app\index\model\Goods::where('Category_id',1)->select(); // var_dump($sql);die;
+     //   $sql =  \app\index\model\Goods::where('Category_id',1)->select(); // var_dump($sql);die;
+ 
+
+
         return view('add',[
       'data' =>$data,   
      'sql' =>$sql
@@ -166,7 +169,7 @@ class Excel extends Controller {
 
     public function ceshi()
     {
-
+   $this->view->engine->layout(false); 
   //  $a= \app\index\model\Goods::all(['goods_name'=>'苹果','goods_name'=>'香蕉']);
   //  $a= \app\index\model\Goods::all(['category_id'=>'1','category_id'=>'2']);
   //  $a= collection($a->toArray());
@@ -178,17 +181,21 @@ class Excel extends Controller {
       return view(); 
     }
 
-  public function cesi()
-  {
- $a = \app\index\model\Admin::select();  // var_dump($a);die;
+  public function cesi(){
 
- $res = [
+ $this->view->engine->layout(false); 
+
+ $data = \app\index\model\Admin::select();  // var_dump($a);die;
+
+ /*$res = [
            'code' => 0,
            'msg' => 'success',
-           'data' => $a
-       ];
-          return json($res);
+           'data' => $data
+       ];*/
+          return json($data);
 
+         
+  //return view();
   }
 
 public function upload()
@@ -269,4 +276,96 @@ public function upload()
 }
 }
 
+ public function imgdemo(Request $request){
+    //接收上传的文件
+    $this->view->engine->layout(false); 
+    $file = $this->request->file('file');
+  
+            if(!empty($file)){
+                //图片存的路径
+                $imgUrl= ROOT_PATH . 'public' . DS . 'uploads'. '/' .  date("Y/m/d");
+                
+                // 移动到框架应用根目录/public/uploads/ 目录下
+                
+                $info = $file->validate(['size'=>1048576,'ext'=>'jpg,png,gif'])->rule('uniqid')->move($imgUrl);
+                $error = $file->getError();
+                //验证文件后缀后大小
+                if(!empty($error)){
+                    dump($error);exit;
+                }
+                if($info){
+                    // 成功上传后 获取上传信息
+                //获取图片的名字
+                $imgName = $info->getFilename();
+                //获取图片的路径
+                $photo=$imgUrl . "/" . $imgName;
+
+                }else{
+                    // 上传失败获取错误信息
+                    $file->getError();
+                }
+            }else{
+                $photo = '';
+            }
+    if($photo !== ''){
+        return ['code'=>1,'msg'=>'成功','photo'=>$photo];
+    }else{
+        return ['code'=>404,'msg'=>'失败'];
+    }
+
+}
+
+public function addBnaner(){
+    if(input('isAjax') == 1){ //异步上传图片
+        // 获取表单上传文件
+        $file = request()->file('file'); //layui默认的文件name 即为 file
+        if(empty($file)){
+            return json(['info'=>'请选择上传文件！','status'=>0]);
+        }
+        // 移动到框架应用根目录/public/upload/ 目录下，并修改文件名为时间戳
+        $info = $file->move(ROOT_PATH.'public'.DS.'upload'.DS.'image'.DS,time());
+            //下面两行即为多图上传的文件名重定义
+            //$filename = time().rand(10,100); //时间戳+随机数
+            //$info = $file->move(ROOT_PATH.'public'.DS.'upload'.DS.'article'.DS,$filename);
+        if($info){      
+        return json(['info'=>$info->getSaveName(),'status'=>1]); //文件名称
+        }else{
+        return json(['info'=>'文件上传失败啦！','status'=>0]);
+        }
+    }
+}    
+public function doUpload(){
+
+        $files = request()->file('image');
+
+        $info="";
+        foreach($files as $picFile){
+
+            // 移动到框架应用根目录/public/uploads/ 目录下
+            $info = $picFile->move(ROOT_PATH.'uploads'.DS.'images');
+
+
+            /*获取存储路径，以便插入数据库*/
+           /* $path= "/uploads/images/".$info->getSaveName();*/
+
+        }
+
+ 
+    if($info!==""){
+            return $this->success('上传成功！');
+            // 成功上传后 获取上传信息
+            // 输出 jpg
+            /* echo $info->getExtension();*/
+            // 输出 42a79759f284b767dfcb2a0197904287.jpg
+            /*echo $info->getFilename();*/
+        }else{
+            // 上传失败获取错误信息
+            /* echo $file->getError();*/
+
+
+            return $this->error('上传失败！');
+        }
+
+
+}
 }
