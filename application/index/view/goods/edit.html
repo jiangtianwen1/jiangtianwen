@@ -1,9 +1,9 @@
 
 <form class="layui-form" action="{:url('goods/save')}" method="post" enctype="multipart/form-data">
   <div class="layui-row layui-col-space10" style="padding: 10px">
-   <a href="{:url('index/index/select')}" class="layui-btn">返回</a>
+   <a href="{:url('index/goods/lis')}" class="layui-btn">返回</a>
 </div class="layui-row"><div>
-  <div class="layui-col-md4 layui-col-md-offset4"><h2>添加商品</h2></div>
+  <div class="layui-col-md4 layui-col-md-offset4"><h2>修改商品</h2></div>
 </div>
  
   <div class="layui-form-item" style="padding-top: 30px">
@@ -16,16 +16,19 @@
   </div>
   <div class="layui-form-item">
     <label class="layui-form-label">商品图片</label>
+       <div><img style="width: 100px" src="/uploads/{$d.goods_picture}"></div>
     <div class="layui-input-inline">
-      <input type="file" name="goods_picture" value="" required lay-verify="required" placeholder="请输入所属分类" autocomplete="off" class="layui-input">
+       <label class="layui-form-label">更换图片</label>
+      <button type="button" class="layui-btn" >
+      <input type="file" name="goods_picture" value=""></button>
     </div>
-    <div class="layui-form-mid layui-word-aux">辅助文字</div>
+    
   </div>
  <div class="layui-form-item">
     <label class="layui-form-label " >商品类别</label>
     <div class=" layui-col-md5">
-      <select name="category_id" value ="{$d.category_id}" lay-verify="required">
-        <option value=""></option>
+      <select name="category_id" value ="{$d.category_id}" lay-verify="required">  
+      <option  name="category_id" value="{$d.category_id}"></option> 
         <option value="1">水果</option>
         <option value="2">蔬菜</option>
         <option value="3">海鲜</option>
@@ -45,7 +48,7 @@
   <div class="layui-form-item layui-form-text">
     <label class="layui-form-label ">商品简介</label>
     <div class=" layui-col-md5">
-      <textarea name="goods_desc" value="" placeholder="请输入内容" class="layui-textarea"></textarea>
+      <textarea name="goods_desc" value="{$d.goods_desc}"  class="layui-textarea">{$d.goods_desc}</textarea>
     </div>
   </div>
   <div class="layui-form-item">

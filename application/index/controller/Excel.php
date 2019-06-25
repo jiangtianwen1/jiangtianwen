@@ -154,10 +154,10 @@ class Excel extends Controller {
     public function add()
     {
 
-   //  $this->view->engine->layout(false); 
-     // $data =  \app\index\model\Category::where('id',1)->find();  
+    $this->view->engine->layout(false); 
+      $data =  \app\index\model\Category::where('id',1)->find();  
 
-     //   $sql =  \app\index\model\Goods::where('Category_id',1)->select(); // var_dump($sql);die;
+       $sql =  \app\index\model\Goods::where('Category_id',1)->select(); // var_dump($sql);die;
  
 
 
@@ -342,11 +342,11 @@ public function doUpload(){
         foreach($files as $picFile){
 
             // 移动到框架应用根目录/public/uploads/ 目录下
-            $info = $picFile->move(ROOT_PATH.'uploads'.DS.'images');
+            $info = $picFilevalidate(['size'=>156780,'ext'=>'jpg,png,gif'])->move(ROOT_PATH.'public' . DS . 'uploads');
 
 
             /*获取存储路径，以便插入数据库*/
-           /* $path= "/uploads/images/".$info->getSaveName();*/
+            $path= "/public/uploads/".$info->getSaveName();
 
         }
 

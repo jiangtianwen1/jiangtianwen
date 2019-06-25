@@ -7,6 +7,7 @@ use think\Validate;
 class Goods extends Controller
 {
 
+
 	public function index()
 	{
     //	$this->view->engine->layout(false); 
@@ -62,16 +63,17 @@ public function save()
 public function lis()
 {
 
-  $sql =  Db::table('goods')->paginate(5);
-
+  $sql =  Db::table('goods')->where('delete_time',0)->paginate(5);
+ // $sql = \app\index\model\Goods::paginate(5);
+  
   return view('list',['data'=>$sql]);
 
 }
  public function edit($id)
   {
-      //$data  =   Db::table('admin')->where(id,$id)->select();
-           $data = \app\index\model\Goods::find($id);
-  return view('index/edit',['d'=>$data]);
+     // $data  =   Db::table('admin')->where(id,1)->find();
+           $data = \app\index\model\Goods::find($id);  //var_dump($data);die;
+  return view('edit',['d'=>$data]);
   }
 
 public function category_id(){
@@ -83,6 +85,20 @@ public function category_id(){
  {
   return view();
 
+ }
+
+ public function delete($id)
+ { 
+
+
+  $data = \app\index\model\Goods::destroy($id);
+   
+   if($data){
+      $this->success('cg');
+   }else{
+    $this->error('sb');
+   }
+  return  $this->redirect('lis');  
  }
 
 }

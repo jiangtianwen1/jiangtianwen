@@ -31,7 +31,7 @@
       <td>{$v.goods_desc}</td>
       <td>
         <button class="layui-btn"><a href="{:url('index/goods/edit',['id'=>$v.id])}">编辑</a></button>
-       <button class="layui-btn"><a href="{:url('index/index/delete',['id'=>$v.id])}">删除</a></button>
+       <button class="layui-btn "><a href="{:url('index/goods/delete',['id'=>$v.id])}" onclick='return del();'>删除</a></button>
      </td>
     </tr>
    
@@ -41,3 +41,16 @@
 {$data->render()}
   <div id="test1" class="layui-col-md4 layui-col-md-offset5"></div>
 </div>
+<script>
+function del()
+{
+  if(confirm("确定要删除吗？"))
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+</script>

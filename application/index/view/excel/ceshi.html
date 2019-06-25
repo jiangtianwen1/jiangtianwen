@@ -15,6 +15,7 @@
    <link href="__STATIC__/admin/skin/black/skin.css" rel="stylesheet" type="text/css" id="skin" />
    <link href="__STATIC__/admin/css/module.css" rel="stylesheet" type="text/css" />
    <link href="__STATIC__/admin/font/iconfont.css" rel="stylesheet" type="text/css" /> -->
+    <link href="__STATIC__/admin/style.css"  type="text/css" />
     <title>登录</title>
     <script src="__STATIC__/admin/js/jquery-1.9.1.min.js" type="text/javascript"></script>
     <script src="__STATIC__/admin/js/jquery.cookie.js" type="text/javascript"></script>
@@ -50,11 +51,12 @@
 
         /*表单标签*/
         #box{
-            margin:50px auto;
-            width:600px;
+          //  margin:50px auto;
+            margin:20px ;
+            width:1000px;
             padding-bottom: 10px;
-            min-height:400px;
-            background:#FF9;
+            min-height:200px;
+             background:  #F8F8FF; 
         }
 
         /*点击添加图片按钮div包裹*/
@@ -159,7 +161,7 @@
     function createPic() {
         var picText='<div class="pic_wrap" id=" showPic'+count+'" onmouseover="overDelete(this)" onmouseleave="leaveDelete(this)">'+
                 '<img  src="'+imgRUL+'"" class="img img-rounded">'+
-                '<div class="delete"><img src="/public/html/images/x_alt.png" onclick="deletePic(this)"></div>'+
+                '<div class="delete"><img style="width: 20px;height:20px" src="/uploads/11.jpg" onclick="deletePic(this)"></div>'+
                 '</div>';
 
         /*遍历除去最新一个file的所有file，如果有file的值与最后一个file的值相等，不插入预览图*/
