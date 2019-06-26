@@ -3,8 +3,8 @@ namespace app\index\controller;
 use think\Controller;
 use think\Db;
 use think\Validate;
-
-class Goods extends Controller
+use think\Request;
+class Goods extends Base
 {
 
 

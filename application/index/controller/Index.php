@@ -4,7 +4,7 @@ use think\Controller;
 use think\Db;
 use think\Validate;
 
-class Index extends Controller
+class Index extends Base
 {
 
   public function index()
@@ -55,7 +55,7 @@ class Index extends Controller
        $sql-> where('name',$name);
       }
     */
-   
+      // var_dump($sql['1']['create_time']);die;
  
         return view('select',['d' => $sql]);
     }

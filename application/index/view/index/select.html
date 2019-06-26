@@ -63,7 +63,9 @@
       <td>{$v.name}</td>
       <td>{$v.password}</td>
       <td>{$v.role_id}</td>
-      <td>{$v.create_time}</td>
+
+      <td>{$v.create_time|date="Y-m-d H:i:s",###}</td>
+
       <td>
         <button class="layui-btn"><a href="{:url('index/index/edit',['id'=>$v.id])}">编辑</a></button>
        <button class="layui-btn"><a href="{:url('index/index/delete',['id'=>$v.id])}">删除</a></button>

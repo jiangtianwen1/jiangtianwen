@@ -1,7 +1,8 @@
 <?php
-namespace app\ndex\controller;
+namespace app\index\controller;
 use think\Controller;
 use think\Db;
+use  think\Request;
 class Base extends Controller
 {
  public function  __construct(Request $request)
@@ -12,6 +13,7 @@ class Base extends Controller
    	
    	$this->redirect('index/login/index');
    }
+
  }
 
 }

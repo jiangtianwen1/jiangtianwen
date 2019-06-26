@@ -91,3 +91,16 @@ function exportExcel($expTitle, $expCellName, $expTableData)
     $objWriter->save('php://output');
     exit;
 }
+
+//兼容yd
+if (\think\Request::instance()->isMobile()) {
+
+   define('VIEW_PATH', __DIR__ . '/../application/home/view/mobile/');
+
+} else {
+
+   define('VIEW_PATH', __DIR__ . '/../application/home/view/default/');
+
+
+
+}  
